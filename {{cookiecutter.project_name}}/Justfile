@@ -17,6 +17,35 @@ update:
     @just pup
     @just bootstrap
 
+venv PY_VERSION="{cookiecutter.python_min_version}":
+    #!/usr/bin/env python
+    from __future__ import annotations
+
+    import subprocess
+    from pathlib import Path
+
+    PY_VERSION = (
+        subprocess.run(
+            {% raw %}["pyenv", "latest", "{{ PY_VERSION }}"], capture_output=True, check=True{% endraw %}
+        )
+        .stdout.decode()
+        .strip()
+    )
+    name = f"tsacls-{PY_VERSION}"
+
+    home = Path.home()
+
+    pyenv_version_dir = home / ".pyenv" / "versions" / PY_VERSION
+    pyenv_virtualenv_dir = home / ".pyenv" / "versions" / name
+
+    if not pyenv_version_dir.exists():
+        subprocess.run(["pyenv", "install", PY_VERSION], check=True)
+
+    if not pyenv_virtualenv_dir.exists():
+        subprocess.run(["pyenv", "virtualenv", PY_VERSION, name], check=True)
+
+    (python_version_file := Path(".python-version")).write_text(name)
+
 ##################
 #    TESTING     #
 ##################
