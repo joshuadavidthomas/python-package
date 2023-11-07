@@ -41,7 +41,7 @@ jobs:
 
 
   pypi:
-    if: ${{ github.event_name == 'release' || inputs.pypi }}
+    {% raw %}if: ${{ github.event_name == 'release' || inputs.pypi }}{% endraw %}
     runs-on: ubuntu-latest
     needs: check
     environment: release
