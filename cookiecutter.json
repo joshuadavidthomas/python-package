@@ -1,0 +1,33 @@
+{
+  "project_name": "python-project",
+  "package_name": "{{ cookiecutter.project_name.lower() | replace('django-', '') | replace('-', '_') | trim() }}",
+  "friendly_name": "{{ cookiecutter.project_name.replace('-', ' ').title() }}",
+  "author_name": "Josh Thomas",
+  "email": "josh@joshthomas.dev",
+  "github_owner": "joshuadavidthomas",
+  "github_repo": "{{ cookiecutter.project_name | trim() }}",
+  "short_description": "This is a Python package.",
+  "version": "0.1.0",
+  "python_versions": "3.8,3.9,3.10,3.11,3.12",
+  "dependencies": "",
+  "license": [
+    "MIT",
+    "BSD",
+    "GPLv3",
+    "Apache Software License 2.0",
+    "Not open source"
+  ],
+  "development_status": [
+    "Development Status :: 1 - Planning",
+    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
+    "Development Status :: 6 - Mature",
+    "Development Status :: 7 - Inactive"
+  ],
+  "__prompts__": {
+    "python_versions": "Comma separated list of Python versions to support",
+    "dependencies": "Comma separated list of dependencies"
+  }
+}

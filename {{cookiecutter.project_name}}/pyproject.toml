@@ -1,0 +1,198 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[project]
+authors = [
+  {name = "{{cookiecutter.author_name}}", email = "{{cookiecutter.email}}"},
+]
+classifiers = [
+  "{{cookiecutter.development_status}}",
+  {% if cookiecutter.license == "MIT" -%}
+  "License :: OSI Approved :: MIT License",
+  {% elif cookiecutter.license == "BSD" -%}
+  "License :: OSI Approved :: BSD License",
+  {% elif cookiecutter.license == "GPLv3" -%}
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  {% elif cookiecutter.license == "Apache" -%}
+  "License :: OSI Approved :: Apache Software License",
+  {% else -%}
+  "License :: Other/Proprietary License",
+  {% endif -%}
+  "Operating System :: OS Independent",
+  {cookiecutter.python_classifiers}
+  "Programming Language :: Python :: Implementation :: CPython",
+]
+dependencies = {cookiecutter.dependencies}
+description = "{{cookiecutter.short_description}}"
+dynamic = ["version"]
+keywords = []
+license = "MIT"
+name = "{{cookiecutter.project_name}}"
+readme = "README.md"
+requires-python = ">={cookiecutter.python_min_version}"
+
+[project.optional-dependencies]
+dev = [
+  "bumpver",
+  "coverage[toml]",
+  "hatch",
+  "mypy",
+  "nox",
+  "pytest",
+  "pytest-cov",
+  "pytest-randomly",
+  "pytest-reverse",
+  "pytest-xdist",
+]
+docs = [
+  "cogapp",
+  "furo",
+  "myst-parser",
+  "sphinx",
+  "sphinx-autobuild",
+  "sphinx-copybutton",
+  "sphinx-inline-tabs",
+]
+lint = ["pre-commit"]
+
+[project.urls]
+Documentation = "https://github.com/{{cookiecutter.github_owner}}/{{cookiecutter.github_repo}}#readme"
+Issues = "https://github.com/{{cookiecutter.github_owner}}/{{cookiecutter.github_repo}}/issues"
+Source = "https://github.com/{{cookiecutter.github_owner}}/{{cookiecutter.github_repo}}"
+
+[tool.hatch.build]
+exclude = [
+  ".github/*",
+  ".dockerignore",
+  ".editorconfig",
+  ".pre-commit-config.yaml",
+  "Justfile",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/{{cookiecutter.package_name}}"]
+
+[tool.hatch.version]
+path = "src/{{cookiecutter.package_name}}/__init__.py"
+
+[tool.bumpver]
+commit = true
+commit_message = ":bookmark: bump version {old_version} -> {new_version}"
+current_version = "{{cookiecutter.version}}"
+push = false   # set to false for CI
+tag = false
+version_pattern = "MAJOR.MINOR.PATCH[PYTAGNUM]"
+
+[tool.bumpver.file_patterns]
+"src/{{cookiecutter.package_name}}/__init__.py" = [
+    '__version__ = "{version}"',
+]
+
+[tool.coverage.paths]
+source = ["src"]
+
+[tool.coverage.report]
+fail_under = 85
+
+[tool.coverage.run]
+omit = [
+  "tests/*",
+]
+source = ["{{cookiecutter.package_name}}"]
+
+[tool.mypy]
+exclude = "docs/.*\\.py$"
+mypy_path = "src/"
+namespace_packages = false
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+ignore_errors = true
+ignore_missing_imports = true
+module = "tests.*"
+
+[tool.pytest.ini_options]
+django_find_project = false
+pythonpath = "src"
+addopts = "-n auto --dist loadfile --doctest-modules"
+norecursedirs = ".* bin build dist *.egg htmlcov logs node_modules templates venv"
+python_files = "tests.py test_*.py *_tests.py"
+testpaths = ["tests"]
+
+[tool.ruff]
+ignore = ["E501", "E741"] # temporary
+select = [
+  "B", # flake8-bugbear
+  "E", # Pycodestyle
+  "F", # Pyflakes
+  "I", # isort
+  "UP", # pyupgrade
+]
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["A", "B", "C", "D", "E", "F", "I"]
+unfixable = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".github",
+  ".hg",
+  ".mypy_cache",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "migrations",
+  "node_modules",
+  "static",
+  "venv",
+]
+extend-include = ["*.pyi?"]
+
+per-file-ignores = {}
+
+# Same as Black.
+line-length = 88
+indent-width = 4
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Assume Python >3.8.
+target-version = "py38"
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+# magic-trailing-comma = "respect"
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+[tool.ruff.isort]
+force-single-line = true
+known-first-party = ["{{cookiecutter.package_name}}"]
+required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.pyupgrade]
+# Preserve types, even if a file imports `from __future__ import annotations`.
+keep-runtime-typing = true

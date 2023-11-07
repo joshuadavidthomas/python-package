@@ -1,0 +1,56 @@
+set dotenv-load := true
+
+@_default:
+    just --list
+
+##################
+#  DEPENDENCIES  #
+##################
+
+bootstrap:
+    python -m pip install --editable '.[dev]'
+
+pup:
+    python -m pip install --upgrade pip
+
+update:
+    @just pup
+    @just bootstrap
+
+##################
+#    TESTING     #
+##################
+
+test:
+    python -m nox --reuse-existing-virtualenvs
+
+coverage:
+    python -m nox --reuse-existing-virtualenvs --session "coverage"
+
+##################
+#     DOCS       #
+##################
+
+@docs-install:
+    python -m pip install '.[docs]'
+
+@docs-serve:
+    #!/usr/bin/env sh
+    if [ -f "/.dockerenv" ]; then
+        sphinx-autobuild docs docs/_build/html --host "0.0.0.0"
+    else
+        sphinx-autobuild docs docs/_build/html --host "localhost"
+    fi
+
+@docs-build LOCATION="docs/_build/html":
+    {% raw %}sphinx-build docs {{ LOCATION }}{% endraw %}
+
+##################
+#     UTILS      #
+##################
+
+lint:
+    python -m nox --reuse-existing-virtualenvs --session "lint"
+
+mypy:
+    python -m nox --reuse-existing-virtualenvs --session "mypy"
