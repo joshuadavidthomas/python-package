@@ -1,6 +1,6 @@
 {
   "project_name": "python-project",
-  "package_name": "{{ cookiecutter.project_name.lower() | replace('django-', '') | replace('-', '_') | trim() }}",
+  "package_name": "{{ cookiecutter.project_name.lower() | replace('-', '_') | trim() }}",
   "friendly_name": "{{ cookiecutter.project_name.replace('-', ' ').title() }}",
   "author_name": "Josh Thomas",
   "email": "josh@joshthomas.dev",

@@ -4,9 +4,9 @@ All contributions are welcome! Besides code contributions, this includes things 
 
 You should first check if there is a [GitHub issue](https://github.com/{{cookiecutter.github_owner}}/{{cookiecutter.github_repo}}/issues) already open or related to what you would like to contribute. If there is, please comment on that issue to let others know you are working on it. If there is not, please open a new issue to discuss your contribution.
 
-Not all contributions need to start with an issue, such as typo fixes in documentation or version bumps to Python or Django that require no internal code changes, but generally, it is a good idea to open an issue first.
+Not all contributions need to start with an issue, such as typo fixes in documentation or version bumps to Python that require no internal code changes, but generally, it is a good idea to open an issue first.
 
-We adhere to Django's Code of Conduct in all interactions and expect all contributors to do the same. Please read the [Code of Conduct](https://www.djangoproject.com/conduct/) before contributing.
+We adhere to the Python Software Foundation's Code of Conduct in all interactions and expect all contributors to do the same. Please read the [PSF Code of Conduct](https://www.python.org/psf/conduct/) before contributing.
 
 ## Setup
 
@@ -36,7 +36,7 @@ To run the test suite against the current environment, run:
 python -m pytest
 ```
 
-To run the test suite against all supported versions of Python and Django, run:
+To run the test suite against all supported versions of Python, run:
 
 ```shell
 python -m nox
